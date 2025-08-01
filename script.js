@@ -97,12 +97,12 @@ const cookieManager = {
 
     // Sauvegarder l'état de la carte
     setMapState: (mapState) => {
-         try {
+        try {
             const data = JSON.stringify(mapState);
             Cookies.set('map_state', data, { expires: 365 });
             return true;
         } catch (error) {
-            console.error('Erreur lors de la sauvegarde de l\\état de la carte:', error);
+            console.error('Erreur lors de la sauvegarde de l\'état de la carte:', error);
             return false;
         }
     },
@@ -113,7 +113,7 @@ const cookieManager = {
             const data = Cookies.get('map_state');
             return data ? JSON.parse(data) : null;
         } catch (error) {
-            console.error('Erreur lors de la récupération de l\\état de la carte:', error);
+            console.error('Erreur lors de la récupération de l\'état de la carte:', error);
             return null;
         }
     },
@@ -311,7 +311,7 @@ function savePreferences() {
     };
     
     // Sauvegarder dans les préférences utilisateur
-    const userPrefs = cookieManager.getUserPreferences() || defaultUserPreferences;
+    const userPrefs = cookieManager.getUserPreferences() || {};
     userPrefs.cookiePreferences = preferences;
     cookieManager.setUserPreferences(userPrefs);
     
@@ -323,7 +323,13 @@ function savePreferences() {
 // ========================================
 
 function initializeUserPreferences() {
-    const preferences = cookieManager.getUserPreferences() || defaultUserPreferences;
+    const preferences = cookieManager.getUserPreferences() || {
+        theme: 'light',
+        language: 'fr',
+        mapZoom: 6,
+        notifications: true,
+        autoSave: true
+    };
     
     // Charger les préférences dans l'interface
     document.getElementById('theme-select').value = preferences.theme;
@@ -349,7 +355,6 @@ function saveUserPreferences() {
         theme: document.getElementById('theme-select').value,
         language: document.getElementById('language-select').value,
         mapZoom: parseInt(document.getElementById('map-zoom-range').value),
-        mapCenter: currentMapState.center,
         notifications: document.getElementById('notifications').checked,
         autoSave: document.getElementById('autoSave').checked
     };
@@ -359,7 +364,13 @@ function saveUserPreferences() {
 }
 
 function resetPreferences() {
-    cookieManager.setUserPreferences(defaultUserPreferences);
+    cookieManager.setUserPreferences({
+        theme: 'light',
+        language: 'fr',
+        mapZoom: 6,
+        notifications: true,
+        autoSave: true
+    });
     initializeUserPreferences();
     showSettingsStatus('reset');
 }
@@ -422,7 +433,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeCookieConsent();
     initializeUserPreferences();
     initializeSmoothScrolling();
-    updateDataPanel();
+    updateUserList(); // Afficher les utilisateurs initiaux
 
     // Event listeners pour les boutons
     document.getElementById('export-excel-btn').addEventListener('click', exportToExcel);
@@ -448,14 +459,13 @@ document.addEventListener('DOMContentLoaded', function() {
 // Fonction utilitaire pour déboguer
 function debugInfo() {
     console.log('=== DEBUG INFO ===');
-    console.log('Données formulaire:', formData);
-    console.log('État carte:', currentMapState);
+    console.log('Données utilisateur:', users);
     console.log('Préférences:', cookieManager.getUserPreferences());
     console.log('Consentement cookies:', cookieManager.hasConsent());
 }
 
 // Exposer certaines fonctions globalement pour le HTML
-window.hideSuccessAlert = hideSuccessAlert;
+window.showSuccessAlert= showSuccessAlert;
 window.acceptAllCookies = acceptAllCookies;
 window.declineAllCookies = declineAllCookies;
 window.savePreferences = savePreferences;
@@ -464,14 +474,3 @@ window.saveUserPreferences = saveUserPreferences;
 window.resetPreferences = resetPreferences;
 window.clearAllCookies = clearAllCookies;
 window.debugInfo = debugInfo;
-// ========================================
-// INITIALISATION DES ÉVÉNEMENTS
-// ========================================
-
-document.addEventListener('DOMContentLoaded', function() {
-    initializeMap();
-    initializeForm();
-    updateUserList(); // Afficher les utilisateurs initiaux
-    document.getElementById('export-excel-btn').addEventListener('click', exportToExcel);
-    initializeCookieConsent(); // Initialiser la gestion des cookies
-});
