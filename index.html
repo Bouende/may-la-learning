@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mayéla learning </title>
+    <title>Mayéla Learning</title>
     
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -14,15 +15,17 @@
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <!-- CSS personnalisé -->
-    <link rel="stylesheet" href="script.css">
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
+    
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
         <div class="container">
             <a class="navbar-brand fw-bold" href="/">
                 <i class="fas fa-globe-europe me-2"></i>
-                Mayéla learning
+                Mayéla Learning
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -52,7 +55,7 @@
             <div class="row align-items-center min-vh-50">
                 <div class="col-lg-6">
                     <h1 class="display-4 fw-bold mb-4 animate__animated animate__fadeInLeft">
-                        Mayéla learning plateforme pour l'apprentissage en ligne
+                        Mayéla Learning plateforme pour l'apprentissage en ligne
                     </h1>
                     <p class="lead mb-4 animate__animated animate__fadeInLeft animate__delay-1s">
                         Découvrez notre plateforme d'apprentissage en ligne avec carte géographique, 
@@ -163,7 +166,7 @@
                         Carte Interactive
                     </h2>
                     <p class="lead text-muted">
-                        Découvrez les emplacements de nos utilisateurs à travers la France
+                        Découvrez les emplacements de nos utilisateurs à travers le pays 
                     </p>
                 </div>
             </div>
@@ -223,7 +226,8 @@
             </div>
         </div>
     </section>
-
+  
+    
     <!-- Section Formulaire -->
     <section id="form-section" class="form-section py-5 bg-light">
         <div class="container">
@@ -240,7 +244,6 @@
             </div>
             <div class="row">
                 <div class="col-12">
-                    <!-- Message de succès -->
                     <div id="success-alert" class="alert alert-success alert-dismissible fade d-none" role="alert">
                         <i class="fas fa-check-circle me-2"></i>
                         <strong>Succès !</strong> Vos données ont été enregistrées avec succès.
@@ -248,8 +251,7 @@
                     </div>
 
                     <div class="row">
-                        <!-- Formulaire -->
-                        <div class="col-lg-8">
+                        <div class="col-lg-12">
                             <div class="card shadow-lg">
                                 <div class="card-header bg-gradient bg-success text-white">
                                     <h3 class="card-title mb-0">
@@ -307,7 +309,7 @@
                                             <label for="telephone" class="form-label">
                                                 Numéro de téléphone <span class="text-danger">*</span>
                                             </label>
-                                            <input type="tel" class="form-control" id="telephone" name="telephone" placeholder="+33 1 23 45 67 89" required>
+                                            <input type="tel" class="form-control" id="telephone" name="telephone" placeholder="+242 00 000 00 00" required>
                                             <div class="invalid-feedback"></div>
                                         </div>
 
@@ -328,54 +330,53 @@
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Panneau de données -->
-                        <div class="col-lg-4">
-                            <div class="card shadow">
-                                <div class="card-header bg-info text-white">
-                                    <h5 class="card-title mb-0">
-                                        <i class="fas fa-database me-2"></i>
-                                        Données Collectées
-                                    </h5>
-                                </div>
-                                <div class="card-body">
-                                    <p class="text-muted">
-                                        Total des entrées: <strong id="total-entries">3</strong>
-                                    </p>
-                                    
-                                    <button class="btn btn-outline-success btn-sm w-100 mb-3" id="export-excel-btn">
-                                        <i class="fas fa-file-excel me-2"></i>
-                                        Exporter en Excel
-                                    </button>
-
-                                    <div class="small">
-                                        <h6>Dernières soumissions:</h6>
-                                        <div id="recent-submissions">
-                                            <div class="border-bottom py-2">
-                                                <strong>Pierre Leroy</strong><br/>
-                                                <small class="text-muted">2025-12-15 16:20</small>
-                                            </div>
-                                            <div class="border-bottom py-2">
-                                                <strong>Marie Martin</strong><br/>
-                                                <small class="text-muted">2025-12-15 15:45</small>
-                                            </div>
-                                            <div class="border-bottom py-2">
-                                                <strong>Jean Dupont</strong><br/>
-                                                <small class="text-muted">2025-12-15 14:30</small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+<div class="col-lg-4">
+                           
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+                        <!-- Section Utilisateurs -->
+    <section id="user-list-section" class="user-list-section py-5 bg-light">
+        <div class="container">
+            <div class="row mb-4">
+                <div class="col-lg-12 text-center">
+                    <h2 class="display-5 fw-bold text-primary mb-3">
+                        <i class="fas fa-users me-3"></i>
+                        Liste des Utilisateurs
+                    </h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Nom</th>
+                                <th>Prénom</th>
+                                <th>Nom d'utilisateur</th>
+                                <th>Email</th>
+                                <th>Adresse</th>
+                                <th>Téléphone</th>
+                            </tr>
+                        </thead>
+                        <tbody id="user-list">
+                            <!-- Les utilisateurs seront ajoutés ici -->
+                        </tbody>
+                    </table>
+                    <button class="btn btn-outline-success" id="export-excel-btn">
+                        <i class="fas fa-file-excel me-2"></i>
+                        Exporter en Excel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- Footer -->
-    <footer class="footer bg-dark text-light py-4">
+    <footer class="footer bg-light text-dark py-4">
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
@@ -391,16 +392,16 @@
                 <div class="col-md-6 text-md-end">
                     <p class="text-muted mb-2">
                         <i class="fas fa-code me-2"></i>
-                        Développé par BOUENDE IKOUNA CHRIST RICHARD ET NZOUSSI RLPH 
+                        Développé par BOUENDE IKOUNA CHRIST RICHARD ,NZOUSSI RLOPH ,LES IA EMERGENT ET POE
                     </p>
                     <div class="social-links">
-                        <a href="#" class="text-light me-3">
+                        <a href="#" class="text-dark me-3">
                             <i class="fab fa-github fa-lg"></i>
                         </a>
-                        <a href="#" class="text-light me-3">
+                        <a href="#" class="text-dark me-3">
                             <i class="fab fa-linkedin fa-lg"></i>
                         </a>
-                        <a href="#" class="text-light">
+                        <a href="#" class="text-dark">
                             <i class="fas fa-envelope fa-lg"></i>
                         </a>
                     </div>
@@ -410,14 +411,13 @@
             <div class="row">
                 <div class="col-12 text-center">
                     <small class="text-muted">
-                        © 2025 Site Web Interactif. Tous droits réservés.
+                        © 2025 Mayéla Learning. Tous droits réservés.
                     </small>
                 </div>
             </div>
         </div>
     </footer>
-
-    <!-- Modal Consentement Cookies -->
+ <!-- Modal Consentement Cookies -->
     <div id="cookie-consent-modal" class="cookie-consent-overlay position-fixed w-100 h-100" style="top: 0; left: 0; background-color: rgba(0, 0, 0, 0.5); z-index: 9999; display: none;">
         <div class="container-fluid h-100 d-flex align-items-center justify-content-center">
             <div class="card shadow-lg" style="max-width: 600px; width: 90%;">
@@ -436,191 +436,190 @@
                     <div class="cookie-preferences">
                         <!-- Cookies nécessaires -->
                         <div class="form-check mb-3 p-3 bg-light rounded">
-                            <input class="form-check-input" type="checkbox" id="
-<input class="form-check-input" type="checkbox" id="necessary" checked disabled>
-                    <label class="form-check-label fw-bold" for="necessary">
-                        Cookies nécessaires
-                        <span class="badge bg-success ms-2">Requis</span>
-                    </label>
-                    <div class="small text-muted mt-1">
-                        Ces cookies sont essentiels au fonctionnement du site. 
-                        Ils incluent les préférences utilisateur et les données de session.
+                            <input class="form-check-input" type="checkbox" id="necessary" checked disabled>
+                            <label class="form-check-label fw-bold" for="necessary">
+                                Cookies nécessaires
+                                <span class="badge bg-success ms-2">Requis</span>
+                            </label>
+                            <div class="small text-muted mt-1">
+                                Ces cookies sont essentiels au fonctionnement du site. 
+                                Ils incluent les préférences utilisateur et les données de session.
+                            </div>
+                        </div>
+
+                        <!-- Cookies analytiques -->
+                        <div class="form-check mb-3 p-3 bg-light rounded">
+                            <input class="form-check-input" type="checkbox" id="analytics">
+                            <label class="form-check-label fw-bold" for="analytics">
+                                Cookies analytiques
+                                <span class="badge bg-info ms-2">Optionnel</span>
+                            </label>
+                            <div class="small text-muted mt-1">
+                                Ces cookies nous aident à comprendre comment vous utilisez le site 
+                                pour améliorer l'expérience utilisateur.
+                            </div>
+                        </div>
+
+                        <!-- Cookies marketing -->
+                        <div class="form-check mb-4 p-3 bg-light rounded">
+                            <input class="form-check-input" type="checkbox" id="marketing">
+                            <label class="form-check-label fw-bold" for="marketing">
+                                Cookies marketing
+                                <span class="badge bg-warning ms-2">Optionnel</span>
+                            </label>
+                            <div class="small text-muted mt-1">
+                                Ces cookies sont utilisés pour personnaliser les publicités 
+                                et mesurer l'efficacité des campagnes.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Boutons d'action -->
+                    <div class="d-flex flex-column flex-sm-row gap-2">
+                        <button class="btn btn-success flex-fill" onclick="acceptAllCookies()">
+                            <i class="fas fa-check me-2"></i>
+                            Accepter tout
+                        </button>
+                        <button class="btn btn-primary flex-fill" onclick="savePreferences()">
+                            <i class="fas fa-save me-2"></i>
+                            Sauvegarder les préférences
+                        </button>
+                        <button class="btn btn-outline-secondary flex-fill" onclick="declineAllCookies()">
+                            <i class="fas fa-times me-2"></i>
+                            Refuser tout
+                        </button>
+                    </div>
+
+                    <div class="mt-3 text-center">
+                        <small class="text-muted">
+                            <i class="fas fa-info-circle me-1"></i>
+                            Vous pouvez modifier vos préférences à tout moment dans les paramètres.
+                        </small>
                     </div>
                 </div>
-
-                <!-- Cookies analytiques -->
-                <div class="form-check mb-3 p-3 bg-light rounded">
-                    <input class="form-check-input" type="checkbox" id="analytics">
-                    <label class="form-check-label fw-bold" for="analytics">
-                        Cookies analytiques
-                        <span class="badge bg-info ms-2">Optionnel</span>
-                    </label>
-                    <div class="small text-muted mt-1">
-                        Ces cookies nous aident à comprendre comment vous utilisez le site 
-                        pour améliorer l'expérience utilisateur.
-                    </div>
-                </div>
-
-                <!-- Cookies marketing -->
-                <div class="form-check mb-4 p-3 bg-light rounded">
-                    <input class="form-check-input" type="checkbox" id="marketing">
-                    <label class="form-check-label fw-bold" for="marketing">
-                        Cookies marketing
-                        <span class="badge bg-warning ms-2">Optionnel</span>
-                    </label>
-                    <div class="small text-muted mt-1">
-                        Ces cookies sont utilisés pour personnaliser les publicités 
-                        et mesurer l'efficacité des campagnes.
-                    </div>
-                </div>
-            </div>
-
-            <!-- Boutons d'action -->
-            <div class="d-flex flex-column flex-sm-row gap-2">
-                <button class="btn btn-success flex-fill" onclick="acceptAllCookies()">
-                    <i class="fas fa-check me-2"></i>
-                    Accepter tout
-                </button>
-                <button class="btn btn-primary flex-fill" onclick="savePreferences()">
-                    <i class="fas fa-save me-2"></i>
-                    Sauvegarder les préférences
-                </button>
-                <button class="btn btn-outline-secondary flex-fill" onclick="declineAllCookies()">
-                    <i class="fas fa-times me-2"></i>
-                    Refuser tout
-                </button>
-            </div>
-
-            <div class="mt-3 text-center">
-                <small class="text-muted">
-                    <i class="fas fa-info-circle me-1"></i>
-                    Vous pouvez modifier vos préférences à tout moment dans les paramètres.
-                </small>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Bouton Préférences Utilisateur -->
-<button id="settings-btn" class="btn btn-primary position-fixed" style="bottom: 20px; right: 20px; border-radius: 50px; width: 60px; height: 60px; z-index: 1000;" title="Paramètres utilisateur">
-    <i class="fas fa-cog"></i>
-</button>
+    <!-- Bouton Préférences Utilisateur -->
+    <button id="settings-btn" class="btn btn-primary position-fixed" style="bottom: 20px; right: 20px; border-radius: 50px; width: 60px; height: 60px; z-index: 1000;" title="Paramètres utilisateur">
+        <i class="fas fa-cog"></i>
+    </button>
 
-<!-- Panneau Préférences -->
-<div id="settings-panel" class="settings-panel position-fixed bg-white shadow-lg border rounded d-none" style="bottom: 90px; right: 20px; width: 350px; max-height: 500px; overflow-y: auto; z-index: 1001;">
-    <div class="card">
-        <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
-            <h5 class="mb-0">
-                <i class="fas fa-user-cog me-2"></i>
-                Préférences
-            </h5>
-            <button class="btn btn-sm btn-outline-light" onclick="toggleSettingsPanel()">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-        
-        <div class="card-body">
-            <!-- Message de statut -->
-            <div id="settings-status" class="alert d-none">
-                <small></small>
+    <!-- Panneau Préférences -->
+    <div id="settings-panel" class="settings-panel position-fixed bg-white shadow-lg border rounded d-none" style="bottom: 90px; right: 20px; width: 350px; max-height: 500px; overflow-y: auto; z-index: 1001;">
+        <div class="card">
+            <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">
+                    <i class="fas fa-user-cog me-2"></i>
+                    Préférences
+                </h5>
+                <button class="btn btn-sm btn-outline-light" onclick="toggleSettingsPanel()">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
-
-            <!-- Thème -->
-            <div class="mb-3">
-                <label class="form-label fw-bold">
-                    <i class="fas fa-palette me-2"></i>
-                    Thème
-                </label>
-                <select class="form-select" id="theme-select">
-                    <option value="light">Clair</option>
-                    <option value="dark">Sombre</option>
-                    <option value="auto">Automatique</option>
-                </select>
-            </div>
-
-            <!-- Langue -->
-            <div class="mb-3">
-                <label class="form-label fw-bold">
-                    <i class="fas fa-language me-2"></i>
-                    Langue
-                </label>
-                <select class="form-select" id="language-select">
-                    <option value="fr">Français</option>
-                    <option value="en">English</option>
-                    <option value="es">Español</option>
-                </select>
-            </div>
-
-            <!-- Paramètres de carte -->
-            <div class="mb-3">
-                <label class="form-label fw-bold">
-                    <i class="fas fa-map me-2"></i>
-                    Zoom par défaut de la carte
-                </label>
-                <input type="range" class="form-range" min="1" max="18" value="6" id="map-zoom-range">
-                <small class="text-muted">Zoom: <span id="zoom-value">6</span></small>
-            </div>
-
-            <!-- Notifications -->
-            <div class="mb-3">
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" id="notifications" checked>
-                    <label class="form-check-label" for="notifications">
-                        <i class="fas fa-bell me-2"></i>
-                        Activer les notifications
-                    </label>
+            
+            <div class="card-body">
+                <!-- Message de statut -->
+                <div id="settings-status" class="alert d-none">
+                    <small></small>
                 </div>
-            </div>
 
-            <!-- Sauvegarde automatique -->
-            <div class="mb-4">
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" id="autoSave">
-                    <label class="form-check-label" for="autoSave">
+                <!-- Thème -->
+                <div class="mb-3">
+                    <label class="form-label fw-bold">
+                        <i class="fas fa-palette me-2"></i>
+                        Thème
+                    </label>
+                    <select class="form-select" id="theme-select">
+                        <option value="light">Clair</option>
+                        <option value="dark">Sombre</option>
+                        <option value="auto">Automatique</option>
+                    </select>
+                </div>
+
+                <!-- Langue -->
+                <div class="mb-3">
+                    <label class="form-label fw-bold">
+                        <i class="fas fa-language me-2"></i>
+                        Langue
+                    </label>
+                    <select class="form-select" id="language-select">
+                        <option value="fr">Français</option>
+                        <option value="en">English</option>
+                        <option value="es">Español</option>
+                    </select>
+                </div>
+
+                <!-- Paramètres de carte -->
+                <div class="mb-3">
+                    <label class="form-label fw-bold">
+                        <i class="fas fa-map me-2"></i>
+                        Zoom par défaut de la carte
+                    </label>
+                    <input type="range" class="form-range" min="1" max="18" value="6" id="map-zoom-range">
+                    <small class="text-muted">Zoom: <span id="zoom-value">6</span></small>
+                </div>
+
+                <!-- Notifications -->
+                <div class="mb-3">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="notifications" checked>
+                        <label class="form-check-label" for="notifications">
+                            <i class="fas fa-bell me-2"></i>
+                            Activer les notifications
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Sauvegarde automatique -->
+                <div class="mb-4">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="autoSave">
+                        <label class="form-check-label" for="autoSave">
+                            <i class="fas fa-save me-2"></i>
+                            Sauvegarde automatique du formulaire
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Boutons d'action -->
+                <div class="d-flex flex-column gap-2">
+                    <button class="btn btn-success btn-sm" onclick="saveUserPreferences()">
                         <i class="fas fa-save me-2"></i>
-                        Sauvegarde automatique du formulaire
-                    </label>
+                        Sauvegarder
+                    </button>
+                    <button class="btn btn-outline-info btn-sm" onclick="resetPreferences()">
+                        <i class="fas fa-undo me-2"></i>
+                        Réinitialiser
+                    </button>
+                    <button class="btn btn-outline-danger btn-sm" onclick="clearAllCookies()">
+                        <i class="fas fa-trash me-2"></i>
+                        Effacer tous les cookies
+                    </button>
                 </div>
-            </div>
 
-            <!-- Boutons d'action -->
-            <div class="d-flex flex-column gap-2">
-                <button class="btn btn-success btn-sm" onclick="saveUserPreferences()">
-                    <i class="fas fa-save me-2"></i>
-                    Sauvegarder
-                </button>
-                <button class="btn btn-outline-info btn-sm" onclick="resetPreferences()">
-                    <i class="fas fa-undo me-2"></i>
-                    Réinitialiser
-                </button>
-                <button class="btn btn-outline-danger btn-sm" onclick="clearAllCookies()">
-                    <i class="fas fa-trash me-2"></i>
-                    Effacer tous les cookies
-                </button>
-            </div>
-
-            <!-- Informations sur les cookies -->
-            <div class="mt-3 p-2 bg-light rounded">
-                <small class="text-muted">
-                    <i class="fas fa-info-circle me-1"></i>
-                    Les préférences sont stockées dans les cookies de votre navigateur.
-                </small>
+                <!-- Informations sur les cookies -->
+                <div class="mt-3 p-2 bg-light rounded">
+                    <small class="text-muted">
+                        <i class="fas fa-info-circle me-1"></i>
+                        Les préférences sont stockées dans les cookies de votre navigateur.
+                    </small>
+                </div>
             </div>
         </div>
     </div>
-</div>
-
-<!-- Scripts -->
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<!-- Leaflet JS -->
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<!-- SheetJS pour Excel -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-<!-- js-cookie pour gestion cookies -->
-<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
-<!-- Script principal -->
-<script src="script.js"></script>
-<script type="texte/javascript" src="script.js"></script>
+    <!-- Scripts -->
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- SheetJS pour Excel -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <!-- js-cookie pour gestion cookies -->
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
+    <!-- Script principal -->  
+    <script src="script.js"></script>
 </body>
+
 </html>

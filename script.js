@@ -2,46 +2,6 @@
 // SITE WEB INTERACTIF - SCRIPT PRINCIPAL
 // ========================================
 
-// ========================================
-// DONNÉES MOCK
-// ========================================
-
-const mockFormData = [
-    {
-        id: 1,
-        nom: 'Dupont',
-        prenom: 'Jean',
-        nomUtilisateur: 'jdupont',
-        email: 'jean.dupont@email.com',
-        adresse: '123 Rue de la Paix, Paris',
-        telephone: '+33 1 23 45 67 89',
-        autres: 'Développeur web',
-        dateSubmission: '2024-12-15 14:30'
-    },
-    {
-        id: 2,
-        nom: 'Martin',
-        prenom: 'Marie',
-        nomUtilisateur: 'mmartin',
-        email: 'marie.martin@email.com',
-        adresse: '456 Avenue des Champs, Lyon',
-        telephone: '+33 4 56 78 90 12',
-        autres: 'Designer UI/UX',
-        dateSubmission: '2024-12-15 15:45'
-    },
-    {
-        id: 3,
-        nom: 'Leroy',
-        prenom: 'Pierre',
-        nomUtilisateur: 'pleroy',
-        email: 'pierre.leroy@email.com',
-        adresse: '789 Boulevard de la République, Marseille',
-        telephone: '+33 4 91 23 45 67',
-        autres: 'Chef de projet',
-        dateSubmission: '2024-12-15 16:20'
-    }
-];
-
 const mockMapLocations = [
     {
         id: 1,
@@ -77,32 +37,14 @@ const mockMapLocations = [
     }
 ];
 
-const defaultUserPreferences = {
-    theme: 'light',
-    language: 'fr',
-    mapZoom: 6,
-    mapCenter: [46.603354, 1.888334], // Centre de la France
-    notifications: true,
-    autoSave: false
-};
-
-// ========================================
-// VARIABLES GLOBALES
-// ========================================
-
-let map = null;
-let formData = [...mockFormData];
-let currentMapState = {
-    center: [46.603354, 1.888334],
-    zoom: 6
-};
-let markers = [];
+let users = []; // Liste des utilisateurs
 
 // ========================================
 // GESTION DES COOKIES
 // ========================================
 
 const cookieManager = {
+    // Sauvegarder les préférences utilisateur
     setUserPreferences: (preferences) => {
         try {
             const data = JSON.stringify(preferences);
@@ -114,6 +56,7 @@ const cookieManager = {
         }
     },
 
+    // Récupérer les préférences utilisateur
     getUserPreferences: () => {
         try {
             const data = Cookies.get('user_preferences');
@@ -124,6 +67,7 @@ const cookieManager = {
         }
     },
 
+    // Sauvegarder temporairement les données du formulaire
     setFormData: (formData) => {
         try {
             const data = JSON.stringify(formData);
@@ -135,6 +79,7 @@ const cookieManager = {
         }
     },
 
+    // Récupérer les données temporaires du formulaire
     getFormData: () => {
         try {
             const data = Cookies.get('form_data_temp');
@@ -145,35 +90,40 @@ const cookieManager = {
         }
     },
 
+    // Supprimer les données temporaires du formulaire
     clearFormData: () => {
         Cookies.remove('form_data_temp');
     },
 
+    // Sauvegarder l'état de la carte
     setMapState: (mapState) => {
-        try {
+         try {
             const data = JSON.stringify(mapState);
             Cookies.set('map_state', data, { expires: 365 });
             return true;
         } catch (error) {
-            console.error('Erreur lors de la sauvegarde de l\'état de la carte:', error);
+            console.error('Erreur lors de la sauvegarde de l\\état de la carte:', error);
             return false;
         }
     },
 
+    // Récupérer l'état de la carte
     getMapState: () => {
         try {
             const data = Cookies.get('map_state');
             return data ? JSON.parse(data) : null;
         } catch (error) {
-            console.error('Erreur lors de la récupération de l\'état de la carte:', error);
+            console.error('Erreur lors de la récupération de l\\état de la carte:', error);
             return null;
         }
     },
 
+    // Vérifier le consentement aux cookies
     hasConsent: () => {
         return Cookies.get('cookie_consent') === 'accepted';
     },
 
+    // Définir le consentement aux cookies
     setConsent: (accepted) => {
         if (accepted) {
             Cookies.set('cookie_consent', 'accepted', { expires: 365 });
@@ -182,6 +132,7 @@ const cookieManager = {
         }
     },
 
+    // Supprimer tous les cookies
     clearAllCookies: () => {
         const cookieNames = ['user_preferences', 'form_data_temp', 'map_state', 'cookie_consent'];
         cookieNames.forEach(name => {
@@ -196,11 +147,9 @@ const cookieManager = {
 
 function initializeMap() {
     const savedMapState = cookieManager.getMapState();
-    if (savedMapState) {
-        currentMapState = savedMapState;
-    }
+    const currentMapState = savedMapState || { center: [46.603354, 1.888334], zoom: 6 };
 
-    map = L.map('map').setView(currentMapState.center, currentMapState.zoom);
+    const map = L.map('map').setView(currentMapState.center, currentMapState.zoom);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -220,57 +169,41 @@ function initializeMap() {
         `;
         
         marker.bindPopup(popupContent);
-        
-        marker.on('click', () => {
-            showSelectedLocation(location);
-        });
-        
-        markers.push(marker);
     });
 
     map.on('moveend', () => {
         const center = map.getCenter();
         const zoom = map.getZoom();
-        currentMapState = {
-            center: [center.lat, center.lng],
-            zoom: zoom
-        };
-        cookieManager.setMapState(currentMapState);
-        updateMapPosition();
+        cookieManager.setMapState({ center: [center.lat, center.lng], zoom });
     });
 
     map.on('zoomend', () => {
         const center = map.getCenter();
         const zoom = map.getZoom();
-        currentMapState = {
-            center: [center.lat, center.lng],
-            zoom: zoom
-        };
-        cookieManager.setMapState(currentMapState);
-        updateMapPosition();
+        cookieManager.setMapState({ center: [center.lat, center.lng], zoom });
     });
 }
 
-function showSelectedLocation(location) {
-    const selectedDiv = document.getElementById('selected-location');
-    const nameEl = document.getElementById('location-name');
-    const descEl = document.getElementById('location-description');
-    const usersEl = document.getElementById('location-users');
-    
-    nameEl.textContent = location.name;
-    descEl.textContent = location.description;
-    usersEl.textContent = `${location.users} utilisateur${location.users > 1 ? 's' : ''}`;
-    
-    selectedDiv.classList.remove('d-none');
-}
+// ========================================
+// MISE À JOUR DE LA LISTE DES UTILISATEURS
+// ========================================
 
-function updateMapPosition() {
-    const positionEl = document.getElementById('map-position');
-    positionEl.innerHTML = `
-        Latitude: ${currentMapState.center[0].toFixed(4)}<br/>
-        Longitude: ${currentMapState.center[1].toFixed(4)}<br/>
-        Zoom: ${currentMapState.zoom}
-    `;
+function updateUserList() {
+    const userListEl = document.getElementById('user-list');
+    userListEl.innerHTML = ''; // Réinitialiser la liste
+
+    users.forEach(user => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${user.nom}</td>
+            <td>${user.prenom}</td>
+            <td>${user.nomUtilisateur}</td>
+            <td>${user.email}</td>
+            <td>${user.adresse}</td>
+            <td>${user.telephone}</td>
+        `;
+        userListEl.appendChild(row);
+    });
 }
 
 // ========================================
@@ -279,239 +212,65 @@ function updateMapPosition() {
 
 function initializeForm() {
     const form = document.getElementById('contact-form');
-    const submitBtn = document.getElementById('submit-btn');
-    
-    const savedData = cookieManager.getFormData();
-    if (savedData) {
-        Object.keys(savedData).forEach(key => {
-            const input = document.getElementById(key);
-            if (input) {
-                input.value = savedData[key];
-            }
-        });
-    }
-
-    form.addEventListener('input', (e) => {
-        const formData = new FormData(form);
-        const data = {};
-        for (let [key, value] of formData.entries()) {
-            data[key] = value;
-        }
-        
-        if (Object.values(data).some(value => value.trim() !== '')) {
-            cookieManager.setFormData(data);
-        }
-    });
-
-    form.addEventListener('input', (e) => {
-        validateField(e.target);
-    });
-
-    form.addEventListener('submit', async (e) => {
+    form.addEventListener('submit', (e) => {
         e.preventDefault();
         
-        if (validateForm()) {
-            await submitForm();
-        }
-    });
-}
-
-function validateField(field) {
-    const value = field.value.trim();
-    let isValid = true;
-    let message = '';
-
-    switch (field.name) {
-        case 'nom':
-        case 'prenom':
-            isValid = value.length > 0;
-            message = `Le ${field.name} est requis`;
-            break;
-            
-        case 'nomUtilisateur':
-            isValid = value.length >= 3;
-            message = 'Le nom d\'utilisateur doit contenir au moins 3 caractères';
-            if (value.length === 0) {
-                message = 'Le nom d\'utilisateur est requis';
-                isValid = false;
-            }
-            break;
-            
-        case 'email':
-            const emailRegex = /\S+@\S+\.\S+/;
-            isValid = emailRegex.test(value);
-            message = 'L\'email n\'est pas valide';
-            if (value.length === 0) {
-                message = 'L\'email est requis';
-                isValid = false;
-            }
-            break;
-            
-        case 'adresse':
-            isValid = value.length > 0;
-            message = 'L\'adresse est requise';
-            break;
-            
-        case 'telephone':
-            const phoneRegex = /^[\+]?\d[\d\s\-()]{9,}$/;
-            isValid = phoneRegex.test(value.replace(/\s/g, ''));
-            message = 'Le numéro de téléphone n\'est pas valide';
-            if (value.length === 0) {
-                message = 'Le numéro de téléphone est requis';
-                isValid = false;
-            }
-            break;
-    }
-
-    if (field.name !== 'autres') { // Le champ "autres" n'est pas obligatoire
-        const feedback = field.nextElementSibling;
-        
-        if (isValid) {
-            field.classList.remove('is-invalid');
-            field.classList.add('is-valid');
-            if (feedback) feedback.textContent = '';
-        } else {
-            field.classList.remove('is-valid');
-            field.classList.add('is-invalid');
-            if (feedback) feedback.textContent = message;
-        }
-    }
-
-    return isValid;
-}
-
-function validateForm() {
-    const form = document.getElementById('contact-form');
-    const fields = form.querySelectorAll('input[required], textarea[required]');
-    let isFormValid = true;
-
-    fields.forEach(field => {
-        if (!validateField(field)) {
-            isFormValid = false;
-        }
-    });
-
-    return isFormValid;
-}
-
-async function submitForm() {
-    const form = document.getElementById('contact-form');
-    const submitBtn = document.getElementById('submit-btn');
-    
-    submitBtn.innerHTML = `
-        <span class="spinner-border spinner-border-sm me-2" role="status"></span>
-        Envoi en cours...
-    `;
-    submitBtn.disabled = true;
-
-    try {
-        // Simuler l'envoi
-        await new Promise(resolve => setTimeout(resolve, 1500));
-
-        const formData = new FormData(form);
-        const newEntry = {
-            id: Date.now(),
-            dateSubmission: new Date().toLocaleString('fr-FR')
+        const newUser = {
+            nom: form.nom.value,
+            prenom: form.prenom.value,
+            nomUtilisateur: form.nomUtilisateur.value,
+            email: form.email.value,
+            adresse: form.adresse.value,
+            telephone: form.telephone.value,
         };
 
-        for (let [key, value] of formData.entries()) {
-            newEntry[key] = value;
-        }
-
-        formData.push(newEntry);
-        updateDataPanel();
-
-        form.reset();
-        form.querySelectorAll('.is-valid, .is-invalid').forEach(field => {
-            field.classList.remove('is-valid', 'is-invalid');
-        });
-
-        cookieManager.clearFormData();
-        showSuccessAlert();
-
-    } catch (error) {
-        console.error('Erreur lors de la soumission:', error);
-    } finally {
-        submitBtn.innerHTML = `
-            <i class="fas fa-paper-plane me-2"></i>
-            Envoyer le formulaire
-        `;
-        submitBtn.disabled = false;
-    }
+        users.push(newUser); // Ajouter le nouvel utilisateur à la liste
+        updateUserList(); // Mettre à jour l'affichage de la liste
+        form.reset(); // Réinitialiser le formulaire
+        showSuccessAlert(); // Afficher l'alerte de succès
+    });
 }
+
+// ========================================
+// AFFICHAGE DE L'ALERTE DE SUCCÈS
+// ========================================
 
 function showSuccessAlert() {
     const alert = document.getElementById('success-alert');
     alert.classList.remove('d-none');
     alert.classList.add('show');
-    
+
     setTimeout(() => {
-        hideSuccessAlert();
+        alert.classList.remove('show');
+        alert.classList.add('d-none');
     }, 5000);
 }
 
-function hideSuccessAlert() {
-    const alert = document.getElementById('success-alert');
-    alert.classList.remove('show');
-    alert.classList.add('d-none');
-}
-
-function updateDataPanel() {
-    const totalEl = document.getElementById('total-entries');
-    const submissionsEl = document.getElementById('recent-submissions');
-    
-    totalEl.textContent = formData.length;
-
-    const recent = formData.slice(-3).reverse();
-    submissionsEl.innerHTML = recent.map(item => `
-        <div class="border-bottom py-2">
-            <strong>${item.prenom} ${item.nom}</strong><br/>
-            <small class="text-muted">${item.dateSubmission}</small>
-        </div>
-    `).join('');
-}
-
 // ========================================
-// EXPORT EXCEL
+// EXPORTATION EN EXCEL
 // ========================================
 
 function exportToExcel() {
-    if (formData.length === 0) {
+    if (users.length === 0) {
         alert('Aucune donnée à exporter');
         return;
     }
 
-    try {
-        const workbook = XLSX.utils.book_new();
-        const worksheet = XLSX.utils.json_to_sheet(formData);
+    const workbook = XLSX.utils.book_new();
+    const worksheet = XLSX.utils.json_to_sheet(users.map(user => ({
+        Nom: user.nom,
+        Prénom: user.prenom,
+        NomUtilisateur: user.nomUtilisateur,
+        Email: user.email,
+        Adresse: user.adresse,
+        Téléphone: user.telephone
+    })));
 
-        const columnWidths = [
-            { wch: 10 }, // ID
-            { wch: 15 }, // Nom
-            { wch: 15 }, // Prénom
-            { wch: 20 }, // Nom d'utilisateur
-            { wch: 25 }, // Email
-            { wch: 30 }, // Adresse
-            { wch: 15 }, // Téléphone
-            { wch: 20 }, // Autres
-            { wch: 20 }  // Date de soumission
-        ];
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Utilisateurs');
 
-        worksheet['!cols'] = columnWidths;
-
-        XLSX.utils.book_append_sheet(workbook, worksheet, 'Données');
-
-        const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
-        const filename = `donnees_formulaire_${timestamp}.xlsx`;
-
-        XLSX.writeFile(workbook, filename);
-
-        alert('Export Excel réussi !');
-
-    } catch (error) {
-        console.error('Erreur lors de l\'export Excel:', error);
-        alert('Erreur lors de l\'export Excel');
-    }
+    const filename = `utilisateurs_${new Date().toISOString().split('T')[0]}.xlsx`;
+    XLSX.writeFile(workbook, filename);
+    alert('Export Excel réussi !');
 }
 
 // ========================================
@@ -551,6 +310,7 @@ function savePreferences() {
         marketing: document.getElementById('marketing').checked
     };
     
+    // Sauvegarder dans les préférences utilisateur
     const userPrefs = cookieManager.getUserPreferences() || defaultUserPreferences;
     userPrefs.cookiePreferences = preferences;
     cookieManager.setUserPreferences(userPrefs);
@@ -565,6 +325,7 @@ function savePreferences() {
 function initializeUserPreferences() {
     const preferences = cookieManager.getUserPreferences() || defaultUserPreferences;
     
+    // Charger les préférences dans l'interface
     document.getElementById('theme-select').value = preferences.theme;
     document.getElementById('language-select').value = preferences.language;
     document.getElementById('map-zoom-range').value = preferences.mapZoom;
@@ -572,6 +333,7 @@ function initializeUserPreferences() {
     document.getElementById('notifications').checked = preferences.notifications;
     document.getElementById('autoSave').checked = preferences.autoSave;
     
+    // Event listeners pour les contrôles
     document.getElementById('map-zoom-range').addEventListener('input', (e) => {
         document.getElementById('zoom-value').textContent = e.target.value;
     });
@@ -592,7 +354,7 @@ function saveUserPreferences() {
         autoSave: document.getElementById('autoSave').checked
     };
     
-const success = cookieManager.setUserPreferences(preferences);
+    const success = cookieManager.setUserPreferences(preferences);
     showSettingsStatus(success ? 'success' : 'error');
 }
 
@@ -617,9 +379,9 @@ function showSettingsStatus(type) {
         cleared: 'Tous les cookies supprimés'
     };
     
-    const alertClass = type === 'success' ? 'alert-success' :
-                       type === 'error' ? 'alert-danger' :
-                       type === 'reset' ? 'alert-info' : 'alert-warning';
+    const alertClass = type === 'success' ? 'alert-success' : 
+                     type === 'error' ? 'alert-danger' : 
+                     type === 'reset' ? 'alert-info' : 'alert-warning';
     
     statusEl.className = `alert ${alertClass}`;
     statusEl.querySelector('small').textContent = messages[type];
@@ -702,3 +464,14 @@ window.saveUserPreferences = saveUserPreferences;
 window.resetPreferences = resetPreferences;
 window.clearAllCookies = clearAllCookies;
 window.debugInfo = debugInfo;
+// ========================================
+// INITIALISATION DES ÉVÉNEMENTS
+// ========================================
+
+document.addEventListener('DOMContentLoaded', function() {
+    initializeMap();
+    initializeForm();
+    updateUserList(); // Afficher les utilisateurs initiaux
+    document.getElementById('export-excel-btn').addEventListener('click', exportToExcel);
+    initializeCookieConsent(); // Initialiser la gestion des cookies
+});
